@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security+ SY0-701 PBQ Practice</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --panel:#151b23;
+    --panel-2:#1c2430;
+    --border:#2a3441;
+    --text:#e6edf3;
+    --text-dim:#8b96a5;
+    --amber:#e3a008;
+    --amber-dim:#3d3116;
+    --teal:#2dd4bf;
+    --teal-dim:#12302c;
+    --red:#f87171;
+    --red-dim:#3a1d1d;
+    --green:#4ade80;
+    --green-dim:#173521;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding:24px 16px 60px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+  header{margin-bottom:20px;}
+  .eyebrow{
+    font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+    font-size:12px;letter-spacing:.08em;color:var(--amber);text-transform:uppercase;
+  }
+  h1{font-size:22px;font-weight:600;margin:4px 0 2px;}
+  .sub{color:var(--text-dim);font-size:14px;margin:0;}
+  footer{margin-top:28px;text-align:center;}
+  footer a{color:var(--teal);text-decoration:none;font-size:12px;}
+
+  .qcard{
+    background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    padding:20px;margin-bottom:18px;
+  }
+  .qhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+  .qnum{font-family:"SFMono-Regular",Consolas,monospace;font-size:12px;color:var(--teal);letter-spacing:.05em;text-transform:uppercase;}
+  .qtype{font-size:11px;color:var(--text-dim);border:1px solid var(--border);padding:3px 8px;border-radius:6px;}
+  .scenario{font-size:15px;line-height:1.5;margin:10px 0 14px;color:var(--text);}
+  .task{font-size:13px;color:var(--text-dim);margin-bottom:14px;font-style:italic;}
+
+  .match-row{display:flex;gap:10px;align-items:center;margin-bottom:8px;flex-wrap:wrap;}
+  .match-label{flex:1;min-width:160px;font-size:14px;background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;}
+  select{
+    font-family:inherit;font-size:14px;background:var(--panel-2);color:var(--text);
+    border:1px solid var(--border);border-radius:8px;padding:8px 10px;flex:1;min-width:160px;
+  }
+
+  .option-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  .opt{
+    font-size:13px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);
+    background:var(--panel-2);cursor:pointer;user-select:none;
+  }
+  .opt.selected{border-color:var(--amber);color:var(--amber);background:var(--amber-dim);}
+  .opt.correct{border-color:var(--green);color:var(--green);background:var(--green-dim);}
+  .opt.incorrect{border-color:var(--red);color:var(--red);background:var(--red-dim);}
+
+  .log{
+    font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+    font-size:12.5px;background:#080b10;border:1px solid var(--border);border-radius:8px;
+    padding:12px 14px;overflow-x:auto;white-space:pre;margin-bottom:14px;color:#9fb3c8;
+  }
+
+  .actions{display:flex;gap:8px;margin-top:6px;}
+  button{
+    font-family:inherit;font-size:14px;border-radius:8px;border:1px solid var(--border);
+    background:var(--panel-2);color:var(--text);padding:9px 14px;cursor:pointer;
+  }
+  .btn-check{border-color:var(--amber);color:var(--amber);}
+  .btn-reset{color:var(--text-dim);}
+
+  .result{margin-top:12px;padding:12px 14px;border-radius:8px;font-size:13.5px;line-height:1.5;display:none;}
+  .result.show{display:block;}
+  .result.pass{background:var(--green-dim);border:1px solid var(--green);color:var(--green);}
+  .result.fail{background:var(--red-dim);border:1px solid var(--red);color:var(--red);}
+  .result .explain{color:var(--text);margin-top:8px;}
+
+  .score-bar{
+    position:sticky;top:0;background:var(--bg);padding:10px 0;margin-bottom:10px;
+    display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text-dim);
+    border-bottom:1px solid var(--border);
+  }
+  .score-bar b{color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">CompTIA Security+ // SY0-701</div>
+    <h1>PBQ Practice</h1>
+    <p class="sub">Scenario-based practice modeled on the exam's performance-based questions. Attempt each, then check your answer.</p>
+  </header>
+
+  <div class="score-bar">
+    <div>Score: <b id="scoreLabel">0/0</b> checked</div>
+    <div id="resetAllWrap"><button class="btn-reset" id="resetAll">Reset all</button></div>
+  </div>
+
+  <div id="questions"></div>
+
+  <footer><a href="./flashcards.html">&larr; Back to flashcards</a></footer>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    id:"q1",
+    type:"Port & Protocol Matching",
+    scenario:"You're documenting firewall rules for a mixed environment running web servers, mail servers, and remote administration tools.",
+    task:"Match each protocol to its default port.",
+    kind:"match",
+    pairs:[
+      {label:"HTTPS", options:["21","22","80","443","3389"], answer:"443"},
+      {label:"SSH", options:["21","22","25","53","443"], answer:"22"},
+      {label:"RDP", options:["389","443","3306","3389","8080"], answer:"3389"},
+      {label:"SMTP", options:["25","110","143","443","587"], answer:"25"},
+      {label:"DNS", options:["21","53","67","110","143"], answer:"53"}
+    ],
+    explain:"HTTPS = 443, SSH = 22, RDP = 3389, SMTP = 25 (submission often uses 587), DNS = 53. Knowing default ports cold lets you read firewall rules and packet captures quickly on the exam."
+  },
+  {
+    id:"q2",
+    type:"Log Analysis",
+    scenario:"A web server access log shows repeated requests from a single external IP:",
+    kind:"choice",
+    log:
+`203.0.113.44 - - [14/Jul/2026:02:13:01] "GET /login.php?user=admin' OR '1'='1 HTTP/1.1" 200
+203.0.113.44 - - [14/Jul/2026:02:13:02] "GET /login.php?user=admin'-- HTTP/1.1" 200
+203.0.113.44 - - [14/Jul/2026:02:13:03] "GET /login.php?user=1; DROP TABLE users;-- HTTP/1.1" 500`,
+    task:"Which attack is represented in this log excerpt?",
+    options:["Cross-site scripting (XSS)","SQL injection","Directory traversal","Buffer overflow"],
+    answer:"SQL injection",
+    explain:"The single quotes, 'OR 1=1' logic, SQL comment syntax (--), and a DROP TABLE statement are classic SQL injection indicators — the attacker is trying to manipulate the backend database query through the login form."
+  },
+  {
+    id:"q3",
+    type:"Log Analysis",
+    scenario:"A Linux server's authentication log shows the following in a 10-second window:",
+    kind:"choice",
+    log:
+`Jul 14 03:01:10 srv sshd: Failed password for root from 198.51.100.9 port 51000
+Jul 14 03:01:11 srv sshd: Failed password for root from 198.51.100.9 port 51001
+Jul 14 03:01:12 srv sshd: Failed password for root from 198.51.100.9 port 51002
+Jul 14 03:01:13 srv sshd: Failed password for root from 198.51.100.9 port 51003
+Jul 14 03:01:14 srv sshd: Accepted password for root from 198.51.100.9 port 51004`,
+    task:"What kind of attack does this log most likely represent?",
+    options:["Brute-force / password spraying","On-path (MITM) attack","DNS poisoning","Privilege escalation"],
+    answer:"Brute-force / password spraying",
+    explain:"Rapid repeated login failures against the same account from one source, followed by a success, is the signature of a brute-force attack. The response should include locking the account, rate-limiting/blocking the source IP, and forcing a password reset."
+  },
+  {
+    id:"q4",
+    type:"Firewall Rule Analysis",
+    scenario:"A firewall evaluates rules top-down and stops at the first match. Current ruleset (in order):",
+    kind:"choice",
+    log:
+`1) ALLOW  src=ANY      dst=10.0.5.10  port=443  proto=TCP
+2) DENY   src=ANY      dst=10.0.5.0/24 port=22   proto=TCP
+3) ALLOW  src=10.0.0.0/8 dst=10.0.5.0/24 port=ANY proto=TCP
+4) DENY   src=ANY      dst=ANY        port=ANY  proto=ANY`,
+    task:"An internal host at 10.0.1.20 attempts SSH (port 22) to 10.0.5.10. What happens, and why?",
+    options:[
+      "Allowed by rule 1, since it's the web server",
+      "Denied by rule 2, because it matches before rule 3 is ever reached",
+      "Allowed by rule 3, since the source is in 10.0.0.0/8",
+      "Denied by rule 4, the implicit deny-all"
+    ],
+    answer:"Denied by rule 2, because it matches before rule 3 is ever reached",
+    explain:"Firewalls process rules in order and stop at the first match. Rule 1 only matches port 443, so it's skipped. Rule 2 matches ANY source to that subnet on port 22 — it hits before rule 3 (which would have allowed it) is ever evaluated. Rule order matters: a broad deny placed above a more specific allow will silently block traffic you meant to permit."
+  },
+  {
+    id:"q5",
+    type:"Wireless Security Matching",
+    scenario:"You're auditing wireless configurations across several company sites before the Security+ architecture review.",
+    task:"Match each wireless security term to its correct description.",
+    kind:"match",
+    pairs:[
+      {label:"WPA3-Personal", options:["Uses SAE for a stronger, offline-attack-resistant handshake vs WPA2-PSK","Legacy protocol using RC4, easily cracked","Enterprise auth using 802.1X + RADIUS","Open network with no encryption"], answer:"Uses SAE for a stronger, offline-attack-resistant handshake vs WPA2-PSK"},
+      {label:"WPA2-Enterprise", options:["Uses SAE for a stronger, offline-attack-resistant handshake vs WPA2-PSK","Legacy protocol using RC4, easily cracked","Enterprise auth using 802.1X + RADIUS","Open network with no encryption"], answer:"Enterprise auth using 802.1X + RADIUS"},
+      {label:"WEP", options:["Uses SAE for a stronger, offline-attack-resistant handshake vs WPA2-PSK","Legacy protocol using RC4, easily cracked","Enterprise auth using 802.1X + RADIUS","Open network with no encryption"], answer:"Legacy protocol using RC4, easily cracked"},
+      {label:"Open/unsecured SSID", options:["Uses SAE for a stronger, offline-attack-resistant handshake vs WPA2-PSK","Legacy protocol using RC4, easily cracked","Enterprise auth using 802.1X + RADIUS","Open network with no encryption"], answer:"Open network with no encryption"}
+    ],
+    explain:"WPA3-Personal replaces the WPA2-PSK four-way handshake with SAE (Simultaneous Authentication of Equals), which resists offline dictionary attacks. WPA2/3-Enterprise uses 802.1X with a RADIUS server for per-user authentication instead of a shared key. WEP is deprecated and trivially broken. Open networks provide no confidentiality at all."
+  },
+  {
+    id:"q6",
+    type:"Incident Response Ordering",
+    scenario:"Your team just confirmed a workstation is actively communicating with a known command-and-control (C2) server.",
+    task:"Put the incident response steps in the correct order (select the correct sequence).",
+    kind:"choice",
+    options:[
+      "Containment → Eradication → Recovery → Preparation → Detection/Analysis → Lessons Learned",
+      "Preparation → Detection/Analysis → Containment → Eradication → Recovery → Lessons Learned",
+      "Detection/Analysis → Preparation → Recovery → Containment → Eradication → Lessons Learned",
+      "Eradication → Containment → Preparation → Detection/Analysis → Recovery → Lessons Learned"
+    ],
+    answer:"Preparation → Detection/Analysis → Containment → Eradication → Recovery → Lessons Learned",
+    explain:"The standard IR lifecycle is Preparation (plans/tools in place beforehand), Detection & Analysis (confirming the incident, as in this scenario), Containment (isolating the host from the network to stop C2 traffic), Eradication (removing the malware/root cause), Recovery (restoring the system to normal operation), and Lessons Learned (post-incident review)."
+  },
+  {
+    id:"q7",
+    type:"Access Control Scenario",
+    scenario:"A hospital wants nurses to access patient records only for patients currently assigned to them, only during their shift hours, and only from hospital-owned devices on the internal network.",
+    task:"Which access control model best supports this level of granular, context-aware policy?",
+    kind:"choice",
+    options:["Discretionary Access Control (DAC)","Role-Based Access Control (RBAC)","Attribute-Based Access Control (ABAC)","Mandatory Access Control (MAC)"],
+    answer:"Attribute-Based Access Control (ABAC)",
+    explain:"RBAC alone could grant 'nurse' role access to all patient records, but can't easily factor in shift time, device ownership, or patient assignment. ABAC evaluates multiple attributes together (user role, resource owner, time, device, location) to make a fine-grained decision — exactly the scenario described."
+  },
+  {
+    id:"q8",
+    type:"Cryptography Scenario",
+    scenario:"Your company needs to send a large encrypted file to a partner organization. You want the speed of symmetric encryption but need a secure way to share the encryption key without a pre-shared secret.",
+    task:"Which approach best fits this requirement?",
+    kind:"choice",
+    options:[
+      "Encrypt the file with RSA directly",
+      "Use a hashing algorithm like SHA-256 to protect the file",
+      "Generate a random symmetric session key, encrypt the file with it, then encrypt that session key with the recipient's public key",
+      "Send the file over an unencrypted channel but password-protect the zip file"
+    ],
+    answer:"Generate a random symmetric session key, encrypt the file with it, then encrypt that session key with the recipient's public key",
+    explain:"This is hybrid encryption — the pattern used by TLS, PGP, and S/MIME. Symmetric encryption (like AES) is fast for large data; asymmetric encryption (like RSA) is slow but solves secure key exchange. Encrypting the session key with the recipient's public key means only their private key can unlock it."
+  }
+];
+
+let score = {checked:0, correct:0};
+
+function renderMatch(q, container){
+  const box = document.createElement('div');
+  q.pairs.forEach((p, i)=>{
+    const row = document.createElement('div');
+    row.className = 'match-row';
+    const label = document.createElement('div');
+    label.className = 'match-label';
+    label.textContent = p.label;
+    const sel = document.createElement('select');
+    sel.dataset.idx = i;
+    const blank = document.createElement('option');
+    blank.textContent = '-- select --';
+    blank.value = '';
+    sel.appendChild(blank);
+    p.options.forEach(o=>{
+      const opt = document.createElement('option');
+      opt.value = o; opt.textContent = o;
+      sel.appendChild(opt);
+    });
+    row.appendChild(label);
+    row.appendChild(sel);
+    box.appendChild(row);
+  });
+  container.appendChild(box);
+  return ()=>{
+    const selects = box.querySelectorAll('select');
+    let allCorrect = true;
+    selects.forEach((s, i)=>{
+      const correct = s.value === q.pairs[i].answer;
+      if(!correct) allCorrect = false;
+      s.style.borderColor = s.value ? (correct ? 'var(--green)' : 'var(--red)') : 'var(--border)';
+    });
+    return allCorrect;
+  };
+}
+
+function renderChoice(q, container){
+  const grid = document.createElement('div');
+  grid.className = 'option-grid';
+  let selected = null;
+  q.options.forEach(opt=>{
+    const el = document.createElement('div');
+    el.className = 'opt';
+    el.textContent = opt;
+    el.onclick = ()=>{
+      [...grid.children].forEach(c=>c.classList.remove('selected'));
+      el.classList.add('selected');
+      selected = opt;
+    };
+    grid.appendChild(el);
+  });
+  container.appendChild(grid);
+  return ()=>{
+    [...grid.children].forEach(c=>{
+      c.classList.remove('selected');
+      if(c.textContent === q.answer) c.classList.add('correct');
+      else if(c.textContent === selected && selected !== q.answer) c.classList.add('incorrect');
+    });
+    return selected === q.answer;
+  };
+}
+
+function buildQuestion(q, idx){
+  const card = document.createElement('div');
+  card.className = 'qcard';
+
+  const head = document.createElement('div');
+  head.className = 'qhead';
+  head.innerHTML = '<span class="qnum">Question ' + (idx+1) + '</span><span class="qtype">' + q.type + '</span>';
+  card.appendChild(head);
+
+  const scenario = document.createElement('div');
+  scenario.className = 'scenario';
+  scenario.textContent = q.scenario;
+  card.appendChild(scenario);
+
+  if(q.log){
+    const log = document.createElement('div');
+    log.className = 'log';
+    log.textContent = q.log;
+    card.appendChild(log);
+  }
+
+  const task = document.createElement('div');
+  task.className = 'task';
+  task.textContent = q.task;
+  card.appendChild(task);
+
+  let getResult;
+  if(q.kind === 'match'){
+    getResult = renderMatch(q, card);
+  } else {
+    getResult = renderChoice(q, card);
+  }
+
+  const actions = document.createElement('div');
+  actions.className = 'actions';
+  const checkBtn = document.createElement('button');
+  checkBtn.className = 'btn-check';
+  checkBtn.textContent = 'Check answer';
+  const resetBtn = document.createElement('button');
+  resetBtn.className = 'btn-reset';
+  resetBtn.textContent = 'Reset';
+  actions.appendChild(checkBtn);
+  actions.appendChild(resetBtn);
+  card.appendChild(actions);
+
+  const result = document.createElement('div');
+  result.className = 'result';
+  result.innerHTML = '<div class="verdict"></div><div class="explain">' + q.explain + '</div>';
+  card.appendChild(result);
+
+  let checkedOnce = false;
+  checkBtn.onclick = ()=>{
+    const isCorrect = getResult();
+    result.classList.add('show');
+    result.classList.toggle('pass', isCorrect);
+    result.classList.toggle('fail', !isCorrect);
+    result.querySelector('.verdict').textContent = isCorrect ? 'Correct!' : 'Not quite — review the explanation below.';
+    if(!checkedOnce){
+      checkedOnce = true;
+      score.checked++;
+      if(isCorrect) score.correct++;
+      updateScore();
+    }
+  };
+  resetBtn.onclick = ()=>{
+    card.remove();
+    const fresh = buildQuestion(q, idx);
+    document.getElementById('questions').replaceChild(fresh, document.getElementById('questions').children[idx] || fresh);
+  };
+
+  return card;
+}
+
+function updateScore(){
+  document.getElementById('scoreLabel').textContent = score.correct + '/' + score.checked;
+}
+
+function renderAll(){
+  const wrap = document.getElementById('questions');
+  wrap.innerHTML = '';
+  QUESTIONS.forEach((q, i)=>{
+    wrap.appendChild(buildQuestion(q, i));
+  });
+}
+
+document.getElementById('resetAll').onclick = ()=>{
+  score = {checked:0, correct:0};
+  updateScore();
+  renderAll();
+};
+
+renderAll();
+</script>
+</body>
+</html>
