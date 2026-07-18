@@ -1,14 +1,50 @@
-# Sec-plus-study
-This is a guide to help me and maybe other study for the sec plus exam it also will help me get used to using github more often
+# CompTIA Security+ (SY0-701) Study Guide
 
-## Reference and resorces 
+A personal study repo for the CompTIA Security+ exam, built around interactive flashcards, performance-based question (PBQ) practice, and a curated set of free/paid study resources.
 
-### Professor messer - Good for free vidoes on the whole exam 
-- link: https://www.professormesser.com/security-plus/sy0-701/sy0-701-video/sy0-701-comptia-security-plus-course/
-- link: https://www.youtube.com/playlist?list=PLG49S3nxzAnl4QDVqK-hOnoqcSKEIDDuv
-### CyberKraft - use dyoutube videos for PBQ in the exam 
-- link: https://cyberkrafttraining.com/security-plus-sp/
-- link: https://www.youtube.com/playlist?list=PLUkY1OVVHzVljGOe8WAkKGc4GT8ZAKaav
-### Dion Training - used practice exams to help understand what I need to work on
-- link: https://www.diontraining.com/collections/practice-exams?gad_source=1&gad_campaignid=23999637077&gbraid=0AAAAAp9g4TCsy8ZwAQm73kUEiiVzsVzsn&gclid=CjwKCAjwyOzSBhBTEiwAmxvJ-uG1Au9b_0rQEisfdOgqxJCPlr1YxQnzYJa-ZU0G99WgbJFF63UTOBoC3JgQAvD_BwE
+## Contents
 
+| File | Description |
+|---|---|
+| [`flashcards.html`](./flashcards.html) | Interactive flashcard deck — 90+ cards across all 5 exam domains, filterable by domain, with a "know it / review" tracker |
+| [`pbq-practice.html`](./pbq-practice.html) | Practice performance-based questions (PBQs) — port/protocol matching, log analysis, attack identification, and firewall rule scenarios |
+| `README.md` | This file |
+
+## How to use the flashcards
+
+Open `flashcards.html` in any browser (or enable GitHub Pages on this repo — see below — to study from a link on your phone). Filter by domain using the chips at the top, flip a card by tapping it, and mark each card "know it" or "review" to track your progress. Progress is saved locally in your browser.
+
+## How to use the PBQ practice
+
+Open `pbq-practice.html` in any browser. Each question mirrors a PBQ style seen on the real exam (matching, drag-style selection, and scenario analysis). Attempt the question, then reveal the explanation to check your reasoning.
+
+## Hosting this on GitHub Pages (optional)
+
+1. Go to **Settings → Pages** in this repo.
+2. Under "Build and deployment," set **Source** to `Deploy from a branch`, branch `main`, folder `/ (root)`.
+3. Save — GitHub will give you a live URL you can bookmark on your phone for on-the-go review.
+
+## Exam domains (SY0-701)
+
+1. General Security Concepts
+2. Threats, Vulnerabilities, and Mitigations
+3. Security Architecture
+4. Security Operations
+5. Security Program Management and Oversight
+
+## Study resources
+
+**Professor Messer** — free full-course videos covering the entire exam
+- https://www.professormesser.com/security-plus/sy0-701/sy0-701-video/sy0-701-comptia-security-plus-course/
+- https://www.youtube.com/playlist?list=PLG49S3nxzAnl4QDVqK-hOnoqcSKEIDDuv
+
+**CyberKraft** — strong for PBQ-style walkthroughs
+- https://cyberkrafttraining.com/security-plus-sp/
+- https://www.youtube.com/playlist?list=PLUkY1OVVHzVljGOe8WAkKGc4GT8ZAKaav
+
+**Dion Training** — practice exams to identify weak areas
+- https://www.diontraining.com/collections/practice-exams
+
+## About
+
+This repo is a personal study project — a way to reinforce Security+ material while getting more comfortable with Git and GitHub.
