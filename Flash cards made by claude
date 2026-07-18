@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Security+ SY0-701 Flashcards</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --panel:#151b23;
+    --panel-2:#1c2430;
+    --border:#2a3441;
+    --text:#e6edf3;
+    --text-dim:#8b96a5;
+    --amber:#e3a008;
+    --amber-dim:#3d3116;
+    --teal:#2dd4bf;
+    --teal-dim:#12302c;
+    --red:#f87171;
+    --green:#4ade80;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding:24px 16px 60px;
+  }
+  .wrap{max-width:720px;margin:0 auto;}
+  header{margin-bottom:20px;}
+  .eyebrow{
+    font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+    font-size:12px;letter-spacing:.08em;color:var(--amber);text-transform:uppercase;
+  }
+  h1{font-size:22px;font-weight:600;margin:4px 0 2px;}
+  .sub{color:var(--text-dim);font-size:14px;margin:0;}
+
+  .domain-bar{
+    display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 14px;
+  }
+  .chip{
+    font-size:12px;padding:6px 10px;border-radius:6px;
+    border:1px solid var(--border);background:var(--panel);
+    color:var(--text-dim);cursor:pointer;user-select:none;
+    font-family:"SFMono-Regular",Consolas,monospace;
+  }
+  .chip.active{border-color:var(--amber);color:var(--amber);background:var(--amber-dim);}
+
+  .stats{
+    display:flex;gap:10px;margin-bottom:16px;
+  }
+  .stat{
+    flex:1;background:var(--panel);border:1px solid var(--border);border-radius:8px;
+    padding:10px 12px;text-align:center;
+  }
+  .stat .n{font-size:18px;font-weight:600;}
+  .stat .l{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.04em;}
+  .stat.known .n{color:var(--green);}
+  .stat.review .n{color:var(--red);}
+
+  .stage{perspective:1400px;margin-bottom:16px;}
+  .card{
+    position:relative;min-height:260px;border-radius:12px;cursor:pointer;
+    transform-style:preserve-3d;transition:transform .45s cubic-bezier(.4,.2,.2,1);
+  }
+  .card.flipped{transform:rotateY(180deg);}
+  .face{
+    position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;
+    border:1px solid var(--border);padding:26px 24px;display:flex;flex-direction:column;
+  }
+  .front{background:var(--panel);}
+  .back{background:var(--panel-2);transform:rotateY(180deg);}
+  .face .domain-tag{
+    font-family:"SFMono-Regular",Consolas,monospace;font-size:11px;color:var(--teal);
+    letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px;
+  }
+  .face .body{
+    flex:1;display:flex;align-items:center;justify-content:center;text-align:center;
+    font-size:19px;line-height:1.45;font-weight:500;
+  }
+  .back .body{font-size:16px;font-weight:400;text-align:left;justify-content:flex-start;align-items:flex-start;}
+  .hint{
+    font-size:12px;color:var(--text-dim);text-align:center;margin-top:10px;
+  }
+
+  .controls{display:flex;gap:8px;margin-top:14px;}
+  button{
+    font-family:inherit;font-size:14px;border-radius:8px;border:1px solid var(--border);
+    background:var(--panel);color:var(--text);padding:10px 14px;cursor:pointer;
+  }
+  button:active{transform:scale(.97);}
+  .btn-nav{flex:1;}
+  .btn-primary{background:var(--amber-dim);border-color:var(--amber);color:var(--amber);}
+  .btn-know{border-color:var(--green);color:var(--green);}
+  .btn-review{border-color:var(--red);color:var(--red);}
+  .row{display:flex;gap:8px;margin-top:8px;}
+
+  .progress-track{height:4px;background:var(--border);border-radius:2px;margin-top:18px;overflow:hidden;}
+  .progress-fill{height:100%;background:var(--amber);transition:width .3s;}
+
+  .loading{color:var(--text-dim);font-size:13px;text-align:center;padding:20px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">CompTIA Security+ // SY0-701</div>
+    <h1>Flashcard deck</h1>
+    <p class="sub">61 cards, weighted to the real exam domains. Tap a card to flip it.</p>
+  </header>
+
+  <div class="domain-bar" id="domainBar"></div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="statPos">1/61</div><div class="l">card</div></div>
+    <div class="stat known"><div class="n" id="statKnown">0</div><div class="l">know it</div></div>
+    <div class="stat review"><div class="n" id="statReview">0</div><div class="l">to review</div></div>
+  </div>
+
+  <div class="stage">
+    <div class="card" id="card">
+      <div class="face front">
+        <div class="domain-tag" id="frontTag">Domain</div>
+        <div class="body" id="frontText">Loading…</div>
+        <div class="hint">Tap to flip</div>
+      </div>
+      <div class="face back">
+        <div class="domain-tag" id="backTag">Domain</div>
+        <div class="body" id="backText"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <button class="btn-nav" id="prevBtn">&larr; Prev</button>
+    <button class="btn-nav btn-primary" id="shuffleBtn">Shuffle</button>
+    <button class="btn-nav" id="nextBtn">Next &rarr;</button>
+  </div>
+  <div class="row">
+    <button class="btn-nav btn-review" id="reviewBtn">Mark to review</button>
+    <button class="btn-nav btn-know" id="knowBtn">I know this</button>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <p class="loading" id="statusMsg"></p>
+</div>
+
+<script>
+const DOMAINS = [
+  {key:"general", label:"1. General concepts", color:"#2dd4bf"},
+  {key:"threats", label:"2. Threats & vulns", color:"#f87171"},
+  {key:"architecture", label:"3. Architecture", color:"#e3a008"},
+  {key:"operations", label:"4. Operations", color:"#a78bfa"},
+  {key:"management", label:"5. Program mgmt", color:"#60a5fa"}
+];
+
+const CARDS = [
+  {d:"general",f:"What are the three pillars of the CIA triad?",b:"Confidentiality, Integrity, and Availability — the core goals security controls are built to protect."},
+  {d:"general",f:"What does the 'non-repudiation' security concept mean?",b:"A party can't deny having performed an action, usually proven through digital signatures, logs, or audit trails."},
+  {d:"general",f:"What are the AAA framework's three components?",b:"Authentication (who you are), Authorization (what you can do), and Accounting (a record of what you did)."},
+  {d:"general",f:"What is the difference between authentication factors 'something you know', 'have', and 'are'?",b:"Know = password/PIN, Have = token/smart card/phone, Are = biometric like fingerprint or face. MFA combines two or more categories."},
+  {d:"general",f:"What is Zero Trust, in one sentence?",b:"A security model that trusts no user or device by default, even inside the network perimeter, and verifies every request continuously."},
+  {d:"general",f:"In Zero Trust architecture, what do the 'control plane' and 'data plane' do?",b:"Control plane makes policy decisions (adjudication) and pushes them out; data plane enforces those decisions on actual traffic (the policy enforcement point)."},
+  {d:"general",f:"What is the difference between symmetric and asymmetric encryption?",b:"Symmetric uses one shared key for encryption and decryption (fast, e.g. AES). Asymmetric uses a public/private key pair (slower, e.g. RSA), often used to exchange symmetric keys."},
+  {d:"general",f:"What is PKI and what does a Certificate Authority (CA) do?",b:"Public Key Infrastructure is the system of certificates, keys, and CAs that manages trust. A CA issues and signs digital certificates that bind a public key to an identity."},
+  {d:"general",f:"What's the difference between hashing and encryption?",b:"Hashing is one-way and produces a fixed-length digest for integrity checking; encryption is two-way (reversible with a key) and protects confidentiality."},
+  {d:"general",f:"What is salting a password hash, and why do it?",b:"Adding random data to a password before hashing so identical passwords produce different hashes, defeating rainbow table attacks."},
+  {d:"general",f:"What's the difference between a Type 1 and Type 2 hypervisor?",b:"Type 1 (bare-metal) runs directly on hardware, e.g. ESXi/Hyper-V. Type 2 (hosted) runs on top of a host OS, e.g. VirtualBox/VMware Workstation."},
+  {d:"general",f:"What is a digital certificate's 'chain of trust'?",b:"The path from an end-entity certificate up through intermediate CAs to a trusted root CA, each link signed by the one above it."},
+  {d:"threats",f:"What's the difference between a vulnerability, a threat, and a risk?",b:"Vulnerability = a weakness; Threat = something that could exploit it; Risk = the likelihood and impact if that exploitation happens."},
+  {d:"threats",f:"What separates an APT (Advanced Persistent Threat) from other threat actors?",b:"Highly skilled, well-resourced (often nation-state), focused on long-term stealthy access rather than quick smash-and-grab attacks."},
+  {d:"threats",f:"What is the key difference between a virus and a worm?",b:"A virus needs a host file and user action to spread; a worm is self-replicating and spreads across networks on its own."},
+  {d:"threats",f:"What is ransomware, and what is 'double extortion'?",b:"Malware that encrypts data and demands payment; double extortion adds a threat to leak stolen data publicly if the ransom isn't paid."},
+  {d:"threats",f:"What is a Remote Access Trojan (RAT)?",b:"Malware disguised as legitimate software that gives an attacker remote control over the infected system."},
+  {d:"threats",f:"What is the difference between phishing, vishing, and smishing?",b:"Phishing = email-based social engineering; vishing = voice/phone calls; smishing = SMS/text messages."},
+  {d:"threats",f:"What is 'pretexting' in social engineering?",b:"Creating a fabricated scenario or false identity to manipulate a victim into giving up information or access."},
+  {d:"threats",f:"What is a watering hole attack?",b:"Compromising a website the target is known to visit, so the attack reaches them without directly targeting them."},
+  {d:"threats",f:"What's the difference between a SQL injection and a cross-site scripting (XSS) attack?",b:"SQLi injects malicious SQL into a database query; XSS injects malicious scripts that run in another user's browser."},
+  {d:"threats",f:"What is a buffer overflow?",b:"Writing more data to a memory buffer than it can hold, overwriting adjacent memory and potentially allowing code execution."},
+  {d:"threats",f:"What's the difference between a zero-day vulnerability and a zero-day exploit?",b:"A zero-day vulnerability is unknown/unpatched by the vendor; a zero-day exploit is code that actively takes advantage of it before a fix exists."},
+  {d:"threats",f:"What is a supply chain attack?",b:"Compromising a trusted third-party vendor, software update, or hardware component to reach the real target indirectly."},
+  {d:"threats",f:"What is typosquatting?",b:"Registering domains with common misspellings of legitimate sites to catch users who mistype a URL."},
+  {d:"threats",f:"What is a denial-of-service (DoS) vs distributed denial-of-service (DDoS) attack?",b:"DoS comes from one source overwhelming a system; DDoS uses many distributed sources (often a botnet) to do the same at larger scale."},
+  {d:"threats",f:"What is the purpose of a honeypot?",b:"A decoy system designed to lure attackers, study their techniques, and divert them away from real assets."},
+  {d:"threats",f:"What does 'compensating control' mean in vulnerability management?",b:"An alternative control used when the primary fix (like a patch) isn't feasible yet, to reduce risk in the meantime."},
+  {d:"threats",f:"What's the difference between vulnerability scanning and penetration testing?",b:"Scanning is automated and identifies known weaknesses without exploiting them; pen testing actively attempts exploitation to prove real-world impact."},
+  {d:"threats",f:"What is segmentation as a mitigation technique?",b:"Dividing a network into isolated zones so a breach in one segment can't easily spread to others."},
+  {d:"threats",f:"What is the difference between a false positive and a false negative in security monitoring?",b:"False positive = alert fires but there's no real threat; false negative = a real threat occurs but no alert fires."},
+  {d:"threats",f:"What is credential harvesting?",b:"Techniques (often phishing pages or keyloggers) used to collect usernames and passwords for later misuse."},
+  {d:"threats",f:"What is a rootkit and why is it hard to detect?",b:"Malware that embeds itself deep in the OS/kernel to hide its presence and maintain privileged, persistent access."},
+  {d:"architecture",f:"What is defense in depth?",b:"Layering multiple, independent security controls so that if one fails, others still protect the asset."},
+  {d:"architecture",f:"What's the difference between a DMZ and an internal network segment?",b:"A DMZ is a buffer zone exposed to untrusted networks (like the internet) hosting public-facing services, isolated from the trusted internal LAN."},
+  {d:"architecture",f:"What's the difference between IaaS, PaaS, and SaaS?",b:"IaaS = you manage OS/apps on rented infrastructure; PaaS = vendor manages OS/runtime, you manage apps/data; SaaS = vendor manages everything, you just use the app."},
+  {d:"architecture",f:"What is the shared responsibility model in cloud computing?",b:"The cloud provider secures the underlying infrastructure, while the customer is responsible for securing their data, access, and configurations on top of it."},
+  {d:"architecture",f:"What's the difference between a firewall's stateful and stateless inspection?",b:"Stateless checks each packet independently against rules; stateful tracks the connection's context and allows return traffic tied to an established session."},
+  {d:"architecture",f:"What is a Web Application Firewall (WAF) used for?",b:"Filtering and monitoring HTTP traffic to protect web applications from attacks like SQL injection and XSS at the application layer."},
+  {d:"architecture",f:"What's the difference between an IDS and an IPS?",b:"An IDS detects and alerts on suspicious traffic; an IPS sits inline and can actively block or drop it in real time."},
+  {d:"architecture",f:"What is microsegmentation?",b:"Granular, often software-defined isolation down to individual workloads or applications, going beyond traditional network segmentation."},
+  {d:"architecture",f:"What is the purpose of a jump server (jump box)?",b:"A hardened intermediary host that admins go through to reach sensitive internal systems, reducing direct exposure."},
+  {d:"architecture",f:"What's the difference between full disk encryption and file-level encryption?",b:"Full disk encryption protects the entire drive automatically at rest; file-level encryption protects individual files selectively."},
+  {d:"architecture",f:"What is an air-gapped system?",b:"A system physically isolated from unsecured networks, including the internet, with no direct network connection."},
+  {d:"architecture",f:"Why are IoT and ICS/SCADA devices considered high risk in security architecture?",b:"They often run outdated firmware, lack patching capability, and were designed for availability/uptime over security."},
+  {d:"architecture",f:"What is high availability and how is it commonly achieved?",b:"Minimizing downtime through redundancy — clustering, load balancing, and failover systems that keep services running if one component fails."},
+  {d:"architecture",f:"What's the difference between RTO and RPO?",b:"RTO (Recovery Time Objective) = how long you can be down; RPO (Recovery Point Objective) = how much data loss (in time) is acceptable."},
+  {d:"operations",f:"What is a SIEM and what does it do?",b:"Security Information and Event Management — aggregates and correlates logs from across the environment to detect and alert on threats."},
+  {d:"operations",f:"What's the difference between a SIEM and a SOAR platform?",b:"SIEM focuses on log aggregation and detection; SOAR adds automated, orchestrated response playbooks to act on those alerts."},
+  {d:"operations",f:"What are the typical phases of the incident response lifecycle?",b:"Preparation, Detection & Analysis, Containment, Eradication, Recovery, and Lessons Learned (post-incident review)."},
+  {d:"operations",f:"What is the order of volatility in digital forensics?",b:"Collect the most volatile evidence first: CPU registers/cache, RAM, network state, running processes, disk, then archival media/logs."},
+  {d:"operations",f:"What is chain of custody in forensics?",b:"Documented record of who handled evidence, when, and how, proving it wasn't altered — required for evidence to hold up legally."},
+  {d:"operations",f:"What's the difference between EDR and traditional antivirus?",b:"Antivirus mainly matches known malware signatures; EDR (Endpoint Detection and Response) continuously monitors endpoint behavior to detect and respond to novel threats."},
+  {d:"operations",f:"What is the principle of least privilege?",b:"Users and systems should have only the minimum access necessary to perform their job — nothing more."},
+  {d:"operations",f:"What's the difference between role-based and attribute-based access control (RBAC vs ABAC)?",b:"RBAC grants access based on a user's assigned role; ABAC evaluates multiple attributes (user, resource, environment) for finer-grained decisions."},
+  {d:"operations",f:"What is a vulnerability management program's basic cycle?",b:"Identify (scan) → prioritize (risk/CVSS) → remediate (patch/mitigate) → validate (rescan) → repeat continuously."},
+  {d:"operations",f:"What is the purpose of a change management process?",b:"A formal, documented approval process for making changes to systems, reducing the risk of outages and unintended security gaps."},
+  {d:"operations",f:"What's the difference between a hot site, warm site, and cold site for disaster recovery?",b:"Hot = fully operational and near-instant failover; Warm = partially equipped, some setup needed; Cold = basic space/power only, longest recovery time."},
+  {d:"operations",f:"What's the difference between backup types: full, incremental, and differential?",b:"Full backs up everything; incremental backs up changes since the last backup (any type); differential backs up changes since the last full backup."},
+  {d:"management",f:"What's the difference between a policy, a standard, a procedure, and a guideline?",b:"Policy = high-level mandatory rule; Standard = specific mandatory requirement supporting the policy; Procedure = step-by-step instructions; Guideline = recommended, non-mandatory best practice."},
+  {d:"management",f:"What is the difference between qualitative and quantitative risk analysis?",b:"Qualitative uses subjective ratings like High/Medium/Low; quantitative assigns numeric/dollar values (e.g. ALE = SLE x ARO)."},
+  {d:"management",f:"What are the four common risk response strategies?",b:"Accept, Avoid, Mitigate (reduce), and Transfer (e.g. insurance or outsourcing)."},
+  {d:"management",f:"What's the difference between a data controller and a data processor?",b:"A controller decides why and how personal data is processed; a processor handles the data on the controller's behalf, per instructions."},
+  {d:"management",f:"What is the purpose of a security awareness training program?",b:"Reducing human risk (like phishing susceptibility) by teaching employees to recognize and respond to security threats."},
+  {d:"management",f:"What's the difference between an SLA, an MOU, and an NDA?",b:"SLA sets measurable service performance expectations; MOU is a non-binding statement of mutual intent; NDA legally protects confidential information shared between parties."}
+];
+
+let filteredIndices = CARDS.map((_,i)=>i);
+let order = [...filteredIndices];
+let pos = 0;
+let flipped = false;
+let activeDomain = "all";
+let progress = {}; // key: card index -> "known" | "review"
+
+const cardEl = document.getElementById('card');
+const frontTag = document.getElementById('frontTag');
+const frontText = document.getElementById('frontText');
+const backTag = document.getElementById('backTag');
+const backText = document.getElementById('backText');
+const statPos = document.getElementById('statPos');
+const statKnown = document.getElementById('statKnown');
+const statReview = document.getElementById('statReview');
+const progressFill = document.getElementById('progressFill');
+const statusMsg = document.getElementById('statusMsg');
+const domainBar = document.getElementById('domainBar');
+
+function domainLabel(key){
+  const found = DOMAINS.find(d=>d.key===key);
+  return found ? found.label : key;
+}
+
+function buildDomainBar(){
+  const allChip = document.createElement('div');
+  allChip.className = 'chip active';
+  allChip.textContent = 'All domains';
+  allChip.onclick = ()=>selectDomain('all', allChip);
+  domainBar.appendChild(allChip);
+  DOMAINS.forEach(d=>{
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = d.label;
+    chip.onclick = ()=>selectDomain(d.key, chip);
+    domainBar.appendChild(chip);
+  });
+}
+
+function selectDomain(key, el){
+  activeDomain = key;
+  [...domainBar.children].forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  filteredIndices = key === 'all' ? CARDS.map((_,i)=>i) : CARDS.map((_,i)=>i).filter(i=>CARDS[i].d===key);
+  order = [...filteredIndices];
+  pos = 0;
+  flipped = false;
+  render();
+}
+
+function shuffle(){
+  for(let i=order.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [order[i],order[j]] = [order[j],order[i]];
+  }
+  pos = 0;
+  flipped = false;
+  render();
+}
+
+function render(){
+  if(order.length===0){
+    frontText.textContent = "No cards in this domain.";
+    backText.textContent = "";
+    return;
+  }
+  const idx = order[pos];
+  const c = CARDS[idx];
+  frontTag.textContent = domainLabel(c.d);
+  backTag.textContent = domainLabel(c.d);
+  frontText.textContent = c.f;
+  backText.textContent = c.b;
+  cardEl.classList.toggle('flipped', flipped);
+  statPos.textContent = (pos+1) + "/" + order.length;
+  const knownCount = Object.values(progress).filter(v=>v==='known').length;
+  const reviewCount = Object.values(progress).filter(v=>v==='review').length;
+  statKnown.textContent = knownCount;
+  statReview.textContent = reviewCount;
+  progressFill.style.width = Math.round(((pos+1)/order.length)*100) + "%";
+}
+
+function next(){
+  if(order.length===0) return;
+  pos = (pos+1) % order.length;
+  flipped = false;
+  render();
+}
+function prev(){
+  if(order.length===0) return;
+  pos = (pos-1+order.length) % order.length;
+  flipped = false;
+  render();
+}
+
+cardEl.addEventListener('click', ()=>{
+  flipped = !flipped;
+  cardEl.classList.toggle('flipped', flipped);
+});
+document.getElementById('nextBtn').onclick = next;
+document.getElementById('prevBtn').onclick = prev;
+document.getElementById('shuffleBtn').onclick = shuffle;
+
+document.getElementById('knowBtn').onclick = async ()=>{
+  const idx = order[pos];
+  progress[idx] = 'known';
+  await saveProgress();
+  render();
+  next();
+};
+document.getElementById('reviewBtn').onclick = async ()=>{
+  const idx = order[pos];
+  progress[idx] = 'review';
+  await saveProgress();
+  render();
+  next();
+};
+
+async function saveProgress(){
+  try{
+    await window.storage.set('secplus-progress', JSON.stringify(progress), false);
+  }catch(e){
+    statusMsg.textContent = "Progress couldn't be saved this session.";
+  }
+}
+
+async function loadProgress(){
+  try{
+    const result = await window.storage.get('secplus-progress', false);
+    if(result && result.value){
+      progress = JSON.parse(result.value);
+    }
+  }catch(e){
+    // no saved progress yet
+  }
+}
+
+(async function init(){
+  buildDomainBar();
+  await loadProgress();
+  render();
+})();
+</script>
+</body>
+</html>
