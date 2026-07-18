@@ -47,8 +47,7 @@ Open `pbq-practice.html` in any browser. Each question mirrors a PBQ style seen 
 
 **Ian Neil** - Book I based all notes on
 - Neil, I. (2024). CompTIA Security+ SY0-701 certification guide (3rd ed.). Packt Publishing.
-- Link to book on amozon
-- https://www.amazon.com/CompTIA-Security-SY0-701-Certification-Guide/dp/1835461530/ref=sr_1_2?crid=IEUZFTWAEXD2&dib=eyJ2IjoiMSJ9.DuIMTk4QQhW1qedyrNOKEGwTpKqfKzsjbq_wB_EpALUva0VLYVMNXY1FRWrpA44vh4EAkeL_mS9eQlxccxSBel6rAuzxo4x_95M8_IsVTRwR8VTX2KyI2x0XWOzlRsqEc4mlmTcGDVGta58shC7R5SeCzlae65xF_GSAghyM-2Gs9lWu6u4JqeIUaImsHKAosCQWNDqNLbuDU-5SgPqZ8w.IiKRYlfGieRrpMNjdpBbHz76ODbt46ZJSkk0eWUgQJk&dib_tag=se&keywords=sec+plus&qid=1784401460&s=books&sprefix=sec+plus%2Cstripbooks%2C170&sr=1-2
+- Link to book on amazon https://www.amazon.com/CompTIA-Security-SY0-701-Certification-Guide/dp/1835461530/ref=sr_1_2?crid=IEUZFTWAEXD2&dib=eyJ2IjoiMSJ9.DuIMTk4QQhW1qedyrNOKEGwTpKqfKzsjbq_wB_EpALUva0VLYVMNXY1FRWrpA44vh4EAkeL_mS9eQlxccxSBel6rAuzxo4x_95M8_IsVTRwR8VTX2KyI2x0XWOzlRsqEc4mlmTcGDVGta58shC7R5SeCzlae65xF_GSAghyM-2Gs9lWu6u4JqeIUaImsHKAosCQWNDqNLbuDU-5SgPqZ8w.IiKRYlfGieRrpMNjdpBbHz76ODbt46ZJSkk0eWUgQJk&dib_tag=se&keywords=sec+plus&qid=1784401460&s=books&sprefix=sec+plus%2Cstripbooks%2C170&sr=1-2
 
 ## About
 
