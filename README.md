@@ -52,3 +52,7 @@ Open `pbq-practice.html` in any browser. Each question mirrors a PBQ style seen 
 ## About
 
 This repo is a personal study project — a way to reinforce Security+ material while getting more comfortable with Git and GitHub.
+
+## Just took the exam 
+- after two mouths of using these resources finally got the cert and everything here helped me greatly!!
+
